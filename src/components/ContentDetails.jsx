@@ -148,9 +148,9 @@ const ContentDetails = () => {
         }}
       >
         <div className="w-[90vw] mr-auto ml-auto">
-          <div className="relative w-full lg:flex items-start z-10 m-6 bg-opacity-90">
+          <div className="relative w-full lg:flex items-start z-10 m-2 lg:m-6 bg-opacity-90">
             <img
-              className="w-5/6 full lg:w-1/3 rounded-xl"
+              className="w-5/6 lg:w-1/3 rounded-xl"
               src={
                 content.poster_path
                   ? `https://image.tmdb.org/t/p/w500${content.poster_path}`
@@ -233,7 +233,7 @@ const ContentDetails = () => {
                 </p>
               </div>
 
-              <hr className="my-6 border-slate-500" />
+              <hr className="my-6 mx-1 border-slate-500" />
 
               {/* Display Director */}
 
@@ -248,7 +248,7 @@ const ContentDetails = () => {
                 )}
               </div>
 
-              <hr className="my-6 border-slate-500" />
+              <hr className="my-6 mx-1 border-slate-500" />
 
               {/* Display Producers */}
               <div className="flex flex-wrap">
