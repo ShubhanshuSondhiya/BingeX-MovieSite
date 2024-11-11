@@ -264,7 +264,7 @@ const ContentDetails = () => {
                   )
                 ) : (
                   <p className="text-slate-300">
-                    No Producer information available
+                    No Writer information available
                   </p>
                 )}
               </div>
