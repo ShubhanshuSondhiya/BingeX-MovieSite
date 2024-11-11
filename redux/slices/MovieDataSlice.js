@@ -62,26 +62,33 @@ export const topRated = createAsyncThunk("fetchTopRated", async () => {
     return err;
   }
 });
-export const search = createAsyncThunk("fetchSearch", async (inputText) => {
-  try {
-    const [movies, TVshows] = await Promise.all([
-      axios.get(
-        `https://api.themoviedb.org/3/search/movie?query=${inputText}&api_key=` +
-          import.meta.env.VITE_TMDB_API_KEY
-      ),
-      axios.get(
-        `https://api.themoviedb.org/3/search/tv?query=${inputText}&api_key=` +
-          import.meta.env.VITE_TMDB_API_KEY
-      ),
-    ]);
-    return {
-      searchMovies: movies.data.results,
-      searchTVShows: TVshows.data.results,
-    };
-  } catch (err) {
-    return err;
+export const search = createAsyncThunk(
+  "fetchSearch",
+  async ({ inputText, page }, { rejectWithValue }) => {
+    try {
+      const [movies, TVshows] = await Promise.all([
+        axios.get(
+          `https://api.themoviedb.org/3/search/movie?query=${inputText}&page=${page}&api_key=` +
+            import.meta.env.VITE_TMDB_API_KEY
+        ),
+        axios.get(
+          `https://api.themoviedb.org/3/search/tv?query=${inputText}&page=${page}&api_key=` +
+            import.meta.env.VITE_TMDB_API_KEY
+        ),
+      ]);
+
+      return {
+        searchMovies: movies.data.results,
+        searchTVShows: TVshows.data.results,
+        totalPages: movies.data.total_pages || TVshows.data.total_pages, // Optional for pagination
+      };
+    } catch (err) {
+      // Use rejectWithValue to pass the error message to the reducer
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
-});
+);
+
 export const genre = createAsyncThunk("fetchGenre", async () => {
   try {
     const [movies, TVshows] = await Promise.all([
@@ -102,21 +109,24 @@ export const genre = createAsyncThunk("fetchGenre", async () => {
     return err;
   }
 });
-export const credits = createAsyncThunk("fetchCredits", async ({type,id}) => {
-  try {
-    const cast = await axios.get(
-      `https://api.themoviedb.org/3/${type}/${id}/credits?language=en-US&api_key=` +
-        import.meta.env.VITE_TMDB_API_KEY
-    );
+export const credits = createAsyncThunk(
+  "fetchCredits",
+  async ({ type, id }) => {
+    try {
+      const cast = await axios.get(
+        `https://api.themoviedb.org/3/${type}/${id}/credits?language=en-US&api_key=` +
+          import.meta.env.VITE_TMDB_API_KEY
+      );
 
-    return {
-      allCredits: cast.data,
-    };
-  } catch (err) {
-    return err;
+      return {
+        allCredits: cast.data,
+      };
+    } catch (err) {
+      return err;
+    }
   }
-});
-export const videos = createAsyncThunk("fetchVideos", async ({type,id}) => {
+);
+export const videos = createAsyncThunk("fetchVideos", async ({ type, id }) => {
   try {
     const vid = await axios.get(
       `https://api.themoviedb.org/3/${type}/${id}/videos?language=en-US&api_key=` +
@@ -130,34 +140,40 @@ export const videos = createAsyncThunk("fetchVideos", async ({type,id}) => {
     return err;
   }
 });
-export const recommendations = createAsyncThunk("fetchRecommendations", async ({type,id}) => {
-  try {
-    const recommended = await axios.get(
-      `https://api.themoviedb.org/3/${type}/${id}/recommendations?language=en-US&api_key=` +
-        import.meta.env.VITE_TMDB_API_KEY
-    );
+export const recommendations = createAsyncThunk(
+  "fetchRecommendations",
+  async ({ type, id }) => {
+    try {
+      const recommended = await axios.get(
+        `https://api.themoviedb.org/3/${type}/${id}/recommendations?language=en-US&api_key=` +
+          import.meta.env.VITE_TMDB_API_KEY
+      );
 
-    return {
-      recommendation: recommended.data.results,
-    };
-  } catch (err) {
-    return err;
+      return {
+        recommendation: recommended.data.results,
+      };
+    } catch (err) {
+      return err;
+    }
   }
-});
-export const similar = createAsyncThunk("fetchSimilar", async ({type,id}) => {
-  try {
-    const similar = await axios.get(
-      `https://api.themoviedb.org/3/${type}/${id}/similar?language=en-US&api_key=` +
-        import.meta.env.VITE_TMDB_API_KEY
-    );
+);
+export const similar = createAsyncThunk(
+  "fetchSimilar",
+  async ({ type, id }) => {
+    try {
+      const similar = await axios.get(
+        `https://api.themoviedb.org/3/${type}/${id}/similar?language=en-US&api_key=` +
+          import.meta.env.VITE_TMDB_API_KEY
+      );
 
-    return {
-      simi: similar.data.results,
-    };
-  } catch (err) {
-    return err;
+      return {
+        simi: similar.data.results,
+      };
+    } catch (err) {
+      return err;
+    }
   }
-});
+);
 
 const movieDataSlice = createSlice({
   name: "movie",
@@ -170,12 +186,13 @@ const movieDataSlice = createSlice({
     topRatedTVShows: [],
     searchMovies: [],
     searchTVShows: [],
+    totalPages:1,
     genreMovies: [],
     genreTV: [],
-    creditsArray:[],
-    videosArray:[],
-    recommendationsArray:[],
-    similarArray:[],
+    creditsArray: [],
+    videosArray: [],
+    recommendationsArray: [],
+    similarArray: [],
     loading: false,
     error: false,
   },
@@ -185,18 +202,18 @@ const movieDataSlice = createSlice({
       .addCase(trending.fulfilled, (state, action) => {
         state.trendingByDay = action.payload.trendingByDay;
         state.trendingByWeek = action.payload.trendingByWeek;
-        state.loading = false; 
-        state.error = false;  
+        state.loading = false;
+        state.error = false;
       })
       .addCase(trending.pending, (state) => {
         state.loading = true;
-        state.error = false; 
+        state.error = false;
       })
       .addCase(trending.rejected, (state) => {
         state.loading = false;
         state.error = true;
       })
-  
+
       // Popular actions
       .addCase(popular.fulfilled, (state, action) => {
         state.popularMovies = action.payload.popularMovies;
@@ -212,7 +229,7 @@ const movieDataSlice = createSlice({
         state.loading = false;
         state.error = true;
       })
-  
+
       // Top Rated actions
       .addCase(topRated.fulfilled, (state, action) => {
         state.topRatedMovies = action.payload.topRatedMovies;
@@ -228,11 +245,12 @@ const movieDataSlice = createSlice({
         state.loading = false;
         state.error = true;
       })
-  
+
       // Search actions
       .addCase(search.fulfilled, (state, action) => {
         state.searchMovies = action.payload.searchMovies;
         state.searchTVShows = action.payload.searchTVShows;
+        state.totalPages = action.payload.totalPages || 1;
         state.loading = false;
         state.error = false;
       })
@@ -244,7 +262,7 @@ const movieDataSlice = createSlice({
         state.loading = false;
         state.error = true;
       })
-  
+
       // Genre actions
       .addCase(genre.fulfilled, (state, action) => {
         state.genreMovies = action.payload.genreMovies;

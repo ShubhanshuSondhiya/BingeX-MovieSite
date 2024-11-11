@@ -64,7 +64,7 @@ const Hero = ({
         }}
       ></div>
 
-      <div className="w-[95vw] relative z-20 text-center text-white">
+      <div className="w-[95vw] flex flex-col justify-center items-center relative z-20 text-center text-white mb-12">
         <h1 className="text-5xl md:text-7xl mb-4">Welcome.</h1>
         <p className="text-base p-4 md:text-xl">
           Your gateway to a universe of movies, TV shows, and famous faces.

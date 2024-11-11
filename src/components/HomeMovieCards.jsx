@@ -107,22 +107,22 @@ const HomeMovieCards = ({ heading, option1, option2, choice1, choice2 }) => {
     });
 
   return (
-    <div className="w-[85vw] ml-auto mr-auto">
-      <div className="flex justify-between mb-4">
-        <h1 className="text-lg md:text-2xl">{heading}</h1>
-        <div className="flex gap-2 p-2 rounded-3xl bg-black text-sm md:text-base">
+    <div className="w-[85vw] ml-auto mr-auto mb-12">
+      <div className="flex justify-between mx-6 mb-6">
+        <h1 className="text-lg md:text-3xl">{heading}</h1>
+        <div className="flex gap-1 p-1 rounded-3xl bg-slate-300 text-sm md:text-base">
           <p
             className={`${
-              optionChange === "op1" ? "bg-white text-black" : "text-white"
+              optionChange === "op1" ? "bg-black text-white" : "text-black"
             } px-1 md:px-2 rounded-3xl cursor-pointer animated-option`}
             onClick={() => setOptionChange("op1")}
           >
             {choice1}
           </p>
-          <p>/</p>
+          <p className="text-black">/</p>
           <p
             className={`${
-              optionChange === "op2" ? "bg-white text-black" : "text-white"
+              optionChange === "op2" ? "bg-black text-white" : "text-black"
             } px-1 md:px-2 rounded-3xl cursor-pointer animated-option`}
             onClick={() => setOptionChange("op2")}
           >

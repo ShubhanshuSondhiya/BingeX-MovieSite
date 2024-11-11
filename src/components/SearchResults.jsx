@@ -7,22 +7,30 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 const SearchResults = () => {
   const { searchTerm } = useParams();
+  const [page , setPage] = useState(1)
   const dispatch = useDispatch();
   const [optionChange, setOptionChange] = useState("op1");
-  const { searchMovies, searchTVShows } = useSelector((state) => {
+  const { searchMovies, searchTVShows ,totalPages } = useSelector((state) => {
     return state.movieReducer;
   });
   console.log(searchMovies, searchTVShows);
 
-  useEffect(() => {
-    dispatch(search(searchTerm));
-  }, [dispatch, searchTerm]);
+  useEffect(() => { 
+    window.scrollTo(0,0);
+    dispatch(search({ inputText: searchTerm, page }));
+  }, [dispatch, searchTerm , page]);
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "long", day: "numeric" };
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
+    }
+  };
   let moviePath = "https://image.tmdb.org/t/p/w500";
   function getVoteColor(vote) {
     if (vote === 0) return "#7f8c8d"; // gray for NR (no rating)
@@ -36,21 +44,21 @@ const SearchResults = () => {
 
   return (
     <div className="w-[90vw] bg-slate-950 text-white ml-auto mr-auto min-h-screen">
-      <h1 className="pt-6 text-xl sm:text-2xl">{`Search results for "${searchTerm}"`}</h1>
-      <div className="flex w-48 gap-2 p-2 rounded-3xl bg-gray-800 text-sm md:text-base">
+      <h1 className="mx-12 pt-6 text-xl sm:text-2xl">{`Search results for "${searchTerm}"`}</h1>
+      <div className="mx-12 mt-4 inline-flex gap-1 p-1 rounded-3xl bg-slate-300 text-sm md:text-base">
         <p
           className={`${
-            optionChange === "op1" ? "bg-white text-black" : "text-white"
-          } px-1 md:px-2 rounded-3xl cursor-pointer animated-option`}
+            optionChange === "op1" ? "bg-black text-white" : "text-black"
+          } px-1 md:px-2 rounded-xl cursor-pointer animated-option`}
           onClick={() => setOptionChange("op1")}
         >
           Movies
         </p>
-        <p>/</p>
+        <p className="text-black">/</p>
         <p
           className={`${
-            optionChange === "op2" ? "bg-white text-black" : "text-white"
-          } px-1 md:px-2 rounded-3xl cursor-pointer animated-option`}
+            optionChange === "op2" ? "bg-black text-white" : "text-black"
+          } px-1 md:px-2 rounded-xl cursor-pointer animated-option`}
           onClick={() => setOptionChange("op2")}
         >
           TV Shows
@@ -184,6 +192,27 @@ const SearchResults = () => {
                 </Link>
               );
             })}
+      </div>
+      <div className="flex justify-center mt-12">
+        {page > 1 && (
+          <button
+            className="px-3 py-1 bg-blue-500 rounded-lg mr-2"
+            onClick={() => handlePageChange(page - 1)}
+          >
+            Previous
+          </button>
+        )}
+        <span className="text-sm sm:text-base text-gray-300 mx-4">
+          Page {page} of {totalPages || 1}
+        </span>
+        {page < totalPages && (
+          <button
+            className="px-3 py-1 bg-blue-500 rounded-lg ml-2"
+            onClick={() => handlePageChange(page + 1)}
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );
