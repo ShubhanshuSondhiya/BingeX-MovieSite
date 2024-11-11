@@ -1,0 +1,195 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.animated-option {
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+  .glow {
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    border-radius: 100%;
+  }
+  
+  .glow-1 {
+    animation: glow1 4s linear infinite;
+  }
+  
+  .glow-2 {
+    animation: glow2 4s linear infinite;
+    animation-delay: 100ms;
+  }
+  
+  .glow-3 {
+    animation: glow3 4s linear infinite;
+    animation-delay: 200ms;
+  }
+  
+  .glow-4 {
+    animation: glow4 4s linear infinite;
+    animation-delay: 300ms;
+  }
+  
+  @keyframes glow1 {
+    0% {
+      transform: translate(10%, 10%) scale(1);
+    }
+    25% {
+      transform: translate(-10%, 10%) scale(1);
+    }
+    50% {
+      transform: translate(-10%, -10%) scale(1);
+    }
+    75% {
+      transform: translate(10%, -10%) scale(1);
+    }
+    100% {
+      transform: translate(10%, 10%) scale(1);
+    }
+  }
+  
+  @keyframes glow2 {
+    0% {
+      transform: translate(-10%, -10%) scale(1);
+    }
+    25% {
+      transform: translate(10%, -10%) scale(1);
+    }
+    50% {
+      transform: translate(10%, 10%) scale(1);
+    }
+    75% {
+      transform: translate(-10%, 10%) scale(1);
+    }
+    100% {
+      transform: translate(-10%, -10%) scale(1);
+    }
+  }
+  
+  @keyframes glow3 {
+    0% {
+      transform: translate(-10%, 10%) scale(1);
+    }
+    25% {
+      transform: translate(-10%, -10%) scale(1);
+    }
+    50% {
+      transform: translate(10%, -10%) scale(1);
+    }
+    75% {
+      transform: translate(10%, 10%) scale(1);
+    }
+    100% {
+      transform: translate(-10%, 10%) scale(1);
+    }
+  }
+  
+  @keyframes glow4 {
+    0% {
+      transform: translate(10%, -10%) scale(1);
+    }
+    25% {
+      transform: translate(10%, 10%) scale(1);
+    }
+    50% {
+      transform: translate(-10%, 10%) scale(1);
+    }
+    75% {
+      transform: translate(-10%, -10%) scale(1);
+    }
+    100% {
+      transform: translate(10%, -10%) scale(1);
+    }
+  }  
+  /************************** playButton **************************/
+  .outer_circle {
+    stroke-width: 3;
+    stroke-dasharray: 410; 
+     stroke-dashoffset: 0;
+    stroke-linecap: square;
+    transition: all .4s ease-out;
+  }
+  .glightbox_video:hover .outer_circle {
+  stroke-dashoffset:410;
+    transition: stroke .7s .4s ease-out, stroke-dashoffset .4s ease-out
+  }
+  .glightbox_video:hover 
+  .inner-circle {
+    fill: #BF2428;
+    transition:fill .4s .3s ease-out;
+    
+  }
+  .glightbox_video:hover
+  .play{
+      fill: white;
+    transition:fill .4s .3s ease-out;
+  }
+  .watchTrailer{
+    background: linear-gradient(#ff0008, #ff0008) left no-repeat, #ffffff;
+    background-size: 0% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 0.5s ease-in-out;
+  }
+  
+  .watchTrailer:hover {
+    background-size: 100% 100%;
+  }
+  
+  /* youtube */
+
+  .videoPopup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 30;
+    .opacityLayer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(3.5px);
+        -webkit-backdrop-filter: blur(3.5px);
+        opacity: 0;
+        transition: opacity 400ms;
+    }
+    .videoPlayer {
+        position: relative;
+        width: 800px;
+        aspect-ratio: 16 / 9;
+        background-color: white;
+        transform: scale(0.2);
+        transition: transform 250ms;
+        .closeBtn {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            color: white;
+            cursor: pointer;
+        }
+    }
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+        .opacityLayer {
+            opacity: 1;
+        }
+        .videoPlayer {
+            transform: scale(1);
+        }
+    }
+}
