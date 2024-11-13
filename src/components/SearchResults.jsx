@@ -76,7 +76,7 @@ const SearchResults = () => {
                   to={`/${optionChange == "op1" ? "movie" : "tv"}/${movie.id}`}
                   key={index}
                 >
-                  <div className="pt-8 w-48 sm:w-52" key={index}>
+                  <div className="pt-8 w-36 sm:w-52" key={index}>
                     <div className="relative">
                       {/* Movie Poster */}
                       <img
@@ -139,7 +139,7 @@ const SearchResults = () => {
                   to={`/${optionChange == "op1" ? "movie" : "tv"}/${movie.id}`}
                   key={index}
                 >
-                  <div className="pt-8 w-48 sm:w-52" key={index}>
+                  <div className="pt-8 w-36 sm:w-52" key={index}>
                     <div className="relative">
                       {/* Movie Poster */}
                       <img

@@ -37,7 +37,7 @@ const SearchBar = () => {
               value={inputText}
               onChange={(e)=>setInputText(e.target.value)}
               placeholder="Enter your search here"
-              className="w-9 rounded-full flex-1 px-2 py-2 sm:px-6 sm:py-4 text-gray-700 focus:outline-none"
+              className="w-9 rounded-full flex-1 px-2 py-2 sm:px-6 sm:py-4 text-gray-700 text-sm lg:text-base focus:outline-none"
             />
             <button type="submit" className="bg-indigo-500 text-white rounded-full font-semibold px-2 py-2 sm:px-8 sm:py-4 hover:bg-indigo-400 focus:bg-indigo-600 focus:outline-none">
               {isLargeScreen ? (
