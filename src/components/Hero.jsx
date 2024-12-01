@@ -2,20 +2,12 @@
 import SearchBar from "./SearchBar";
 import { useState, useEffect, useMemo } from "react";
 
-const Hero = ({
-  trendingByDay,
-  trendingByWeek,
-  popularMovies,
-}) => {
+const Hero = ({ trendingByDay, trendingByWeek, popularMovies }) => {
   const [randomBackdrop, setRandomBackdrop] = useState("");
 
   // Memoize the movies array
   const movies = useMemo(() => {
-    return [
-      ...trendingByDay,
-      ...trendingByWeek,
-      ...popularMovies,
-    ];
+    return [...trendingByDay, ...trendingByWeek, ...popularMovies];
   }, [trendingByDay, trendingByWeek, popularMovies]);
 
   useEffect(() => {
@@ -28,14 +20,8 @@ const Hero = ({
         );
       }
     };
-
-    // Update the backdrop immediately on load
     updateRandomBackdrop();
-
-    // Set an interval to update the backdrop every 5 seconds
     const interval = setInterval(updateRandomBackdrop, 10000);
-
-    // Clear the interval on unmount
     return () => clearInterval(interval);
   }, [movies]);
 
@@ -50,7 +36,7 @@ const Hero = ({
           backgroundPosition: "top",
           backgroundRepeat: "no-repeat",
           zIndex: 5,
-          transition: "background-image 1s ease-in-out", // Smooth transition effect
+          transition: "background-image 2s ease-in-out", // Smooth transition effect
         }}
       ></div>
 
@@ -58,8 +44,7 @@ const Hero = ({
       <div
         className="lg:h-[100vh] h-[60vh] absolute inset-0 z-20"
         style={{
-          backgroundImage: 
-          `linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(2,6,23,0.9051995798319328) 9%, rgba(2,6,23,0.7371323529411764) 22%, rgba(2,6,23,0) 74%),
+          backgroundImage: `linear-gradient(180deg, rgba(2,6,23,1) 0%, rgba(2,6,23,0.9051995798319328) 9%, rgba(2,6,23,0.7371323529411764) 22%, rgba(2,6,23,0) 74%),
           linear-gradient(0deg, rgba(2,6,23,1) 0%, rgba(2,6,23,0.9051995798319328) 9%, rgba(2,6,23,0.7371323529411764) 22%, rgba(2,6,23,0) 74%)`,
         }}
       ></div>
