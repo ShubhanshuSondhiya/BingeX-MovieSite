@@ -276,7 +276,7 @@ const ContentDetails = () => {
       <div className="w-[90vw] mr-auto ml-auto">
         <div className="mt-8">
           <h2 className="text-3xl">Top Cast</h2>
-          <Carousel
+              <Carousel
             responsive={responsiveCast}
             swipeable
             draggable
@@ -286,7 +286,7 @@ const ContentDetails = () => {
             containerClass="carousel-container"
             itemClass="carousel-item-padding-40-px"
           >
-            {creditsArray.cast.map((castMember, index) => (
+            {(creditsArray?.cast || []).map((castMember, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center w-40 text-center pt-6"
@@ -302,14 +302,24 @@ const ContentDetails = () => {
                 />
                 <p className="font-bold">{castMember.name}</p>
                 <p className="text-sm text-slate-300">{castMember.character}</p>
+                <div
+                  className="videoItem m-3"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const lastVideo = videosArray && videosArray.length ? videosArray[videosArray.length - 1] : null;
+                    if (lastVideo) {
+                      setVideoId(lastVideo.key);
+                      setShow(true);
+                    }
+                  }}
+                >
+                  <PlayButton />
+                </div>
               </div>
             ))}
           </Carousel>
-        </div>
-        <div className="mt-8">
-          <h2 className="text-3xl mb-8">
-            {videosArray.length > 0 ? "Videos" : ""}
-          </h2>
+
+          {/* Videos Carousel */}
           <Carousel
             responsive={responsiveVideo}
             swipeable
@@ -370,12 +380,14 @@ const ContentDetails = () => {
               </div>
             ))}
           </Carousel>
+
           <VideoPopup
             show={show}
             setShow={setShow}
             videoId={videoId}
             setVideoId={setVideoId}
           />
+
         </div>
 
         {/* Similar Movies Section */}

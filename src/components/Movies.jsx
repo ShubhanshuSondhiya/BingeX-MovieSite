@@ -37,13 +37,17 @@ function Movies() {
   // Fetch genres dynamically
   useEffect(() => {
     const fetchGenres = async () => {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/genre/movie/list?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }`
-      );
-      const data = await response.json();
-      setGenres(data.genres);
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/genre/movie/list?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }`
+        );
+        const data = await response.json();
+        setGenres(data.genres || []);
+      } catch (err) {
+        setGenres([]);
+      }
     };
     fetchGenres();
   }, []);
@@ -60,15 +64,21 @@ function Movies() {
         page: currentPage,
       });
 
-      const response = await fetch(
-        `https://api.themoviedb.org/3/discover/movie?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }&${filters.toString()}`
-      );
-      const data = await response.json();
-      setMovies(data.results);
-      setTotalPages(data.total_pages);
-      setLoading(false);
+      try {
+        const response = await fetch(
+          `https://api.themoviedb.org/3/discover/movie?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }&${filters.toString()}`
+        );
+        const data = await response.json();
+        setMovies(data.results || []);
+        setTotalPages(data.total_pages || 1);
+      } catch (err) {
+        setMovies([]);
+        setTotalPages(1);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchMovies();
   }, [selectedGenre, selectedLanguage, currentPage]);

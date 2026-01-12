@@ -66,7 +66,7 @@ const SearchResults = () => {
       </div>
       <div className="flex flex-wrap gap-6 justify-center">
         {optionChange == "op1"
-          ? searchMovies.map((movie, index) => {
+          ? (searchMovies || []).map((movie, index) => {
               const voteAverage = movie.vote_average || 0;
               const percentage =
                 voteAverage > 0 ? Math.round(voteAverage * 10) : 0;
@@ -129,7 +129,7 @@ const SearchResults = () => {
                 </Link>
               );
             })
-          : searchTVShows.map((movie, index) => {
+          : (searchTVShows || []).map((movie, index) => {
               const voteAverage = movie.vote_average || 0;
               const percentage =
                 voteAverage > 0 ? Math.round(voteAverage * 10) : 0;

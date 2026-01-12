@@ -47,8 +47,8 @@ const HomeMovieCards = ({ heading, option1, option2, choice1, choice2 }) => {
     return "#7f8c8d";
   }
 
-  const renderMovies = (movies) =>
-    movies.map((movie, index) => {
+  const renderMovies = (movies = []) =>
+    (movies || []).map((movie, index) => {
       const voteAverage = movie.vote_average || 0;
       const percentage = voteAverage > 0 ? Math.round(voteAverage * 10) : 0;
 
